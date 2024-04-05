@@ -1,0 +1,71 @@
+
+1
+Project 2: Transmission Control Protocol
+Computer Networks (CS-UH 3012) - Spring 2024
+1 Code of Conduct
+All  assignments  are  graded,  meaning  we  expect  you  to  adhere  to  the  academic  integrity 
+standards of NYU Abu Dhabi. To avoid any confusion regarding this, we will briefly state what is 
+and isn’t allowed when working on an assignment.
+1. Any document and program code that you submit must be fully written by yourself.
+2. You can discuss your work with fellow students, as long as these discussions are
+restricted to general solution techniques. In other words, these discussions should not
+be about concrete code you are writing, nor about specific results you wish to submit.
+3. When discussing an assignment with others, this should never lead to you possessing
+the complete or partial solution of others, regardless of whether the solution is in paper
+or digital form, and independent of who made the solution.
+4. You are not allowed to possess solutions by someone from a different year or section, by
+someone from another university, or code from the Internet, etc.
+5. There is never a valid reason to share your code with fellow students.
+6. There is no valid reason to publish your code online in any form.
+7. Every student is responsible for the work they submit. If there is any doubt during the
+grading about whether a student created the assignment themselves (e.g. if the solution
+matches that of others), we reserve the option to let the student explain why this is the
+case. In case doubts remain, or we decide to directly escalate the issue, the suspected
+violations will be reported to the academic administration according to the policies of
+NYU Abu Dhabi. More details can be found at:
+https://students.nyuad.nyu.edu/academics/registration/academic-policies/academic-integ
+rity/
+Furthermore, every integrity violation will be penalized with (a) 10% or (b) the full
+percentage of the gradable assessment, whichever is higher.
+2 Project Objectives
+The objective of this project is to build TCP from scratch. The project is divided into two tasks:
+reliable data transfer and congestion control. Both tasks have individual due dates and are
+interdependent.
+Since this is a group project, you're required to find a partner to work with. Once you've found a
+partner, please inform the TA and the professor via email before the deadline specified in the
+submission details and policy. Note that if the deadline for forming a group is missed, a 10%
+penalty will be imposed.
+Before beginning the project, make sure to read the entireproject description carefully. This will
+help you understand the provided functionality and the features you're expected to implement.
+3 Task 1: Simplified TCP Sender/Receiver
+For the first task, the goal is to create a "Reliable Data Transfer" protocol that aligns with the
+description in section 3.5.4 of the textbook. The objective is to develop a simplified TCP sender
+and receiver that can manage packet losses and retransmissions.
+The implementation of the protocol requires the following functionalities:
+● Sending packets to the network based on a fixed sending window size, as illustrated in
+Figure 3.33 in the textbook. The window size is set to 10 packets.
+● Sending cumulative acknowledgments from the receiver and determining how to
+respond to them at the sender.
+● Using a single retransmission timer to handle packet loss and retransmission.
+In short, the approach used for implementing the first task is similar to the Go-Back-N protocol.
+Both use cumulative acknowledgments and a single timeout timer for the oldest
+unacknowledged packet. However, in this approach, only the packet with the smallest sequence
+number in the window is retransmitted upon a timeout, as opposed to the entire window in the
+Go-Back-N protocol.
+At the receiver, out-of-order packets must be buffered and cumulative acknowledgments are
+sent for out-of-order packets. When a packet is lost, the packet must be retransmitted by the
+sender using a retransmission timeout timer (RTO) with a fixed timeout value that is suitable for
+the emulated network scenario using MahiMahi. When an ACK is received that acknowledges a
+transmitted packet, the retransmission timer is restarted so that it will expire after the fixed
+timeout value.
+The sender should terminate upon successfully transmitting the entire file, including receiving an
+acknowledgment for the very last packet.
+We have provided you with a simple (stop-and-wait) starter-code that consists of the following:
+● rdt receiver: this holds the implementation of a simple reliable data transfer protocol (rdt)
+receiver, similar to Figure 3.14 in the textbook.
+● rdt sender: this holds the implementation of a simple reliable data transfer protocol (rdt)
+sender, similar to Figure 3.15 in the textbook.
+● Channel traces for emulating different network conditions
+The simple rdt protocol is implemented on top of the UDP transport protocol. During the lab
+session, the TA showed you how to use the network emulator MahiMahi to test your sender and
+receiver functionality in an emulated network environment.
