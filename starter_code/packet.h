@@ -4,8 +4,8 @@ enum packet_type {
 };
 
 typedef struct {
-    int seqno;
-    int ackno;
+    u_int32_t seqno;
+    u_int32_t ackno;
     int ctr_flags;
     int data_size;
 }tcp_header;
